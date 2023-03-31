@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index', 'show']]);
-    //     $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-    // }
+    public function __construct()
+    {
+        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
 
     public function index(Request $request)
     {
@@ -72,9 +73,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $users = User::find($id);
-        $roles = ['superadmin', 'admin', 'operator', 'owner'];
-        return view('users/user-edit', compact('users'))->with('roles', $roles);
+        $user = User::findOrFail($id);
+        $isSuperadmin = auth()->user()->hasRole('superadmin');
+        $roles = $isSuperadmin
+            ? Role::all()
+            : Role::where('name', '!=', 'superadmin')->get();
+        return view('users/user-edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, $id)
@@ -82,16 +86,14 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,' . $id,
-            'address' => 'required',
-            'phone' => 'required|numeric',
-            'role' => 'required|in:superadmin,admin,operator,owner',
+            'address' => 'nullable',
+            'phone' => ' nullable|numeric',
         ]);
 
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role = $request->role;
         $user->save();
 
         return redirect()->route('user-management.index')->with('success', 'User updated successfully.');

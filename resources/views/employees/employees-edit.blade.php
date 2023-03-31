@@ -78,15 +78,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                        <label for="role" class="form-control-label">{{ __('Role') }}</label>
-                        <select class="form-control" id="role" name="role">
-                            @foreach ($roles as $role)
-                            <option value="{{ $role }}" {{ $role == $users->role ? 'selected' : '' }}>{{ str()->title($role) }}</option>
-                            @endforeach
-                        </select>
-                        @error('role')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
+                            <label for="roles" class="form-control-label">{{ __('Roles') }}</label>
+                            <select name="role" id="role" class="form-control" required>
+                                <option value="" selected disabled>{{ __('Select Role') }}</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->name }}" {{ $users->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>

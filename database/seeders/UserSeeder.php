@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,33 +16,39 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'Superadmin',
+        $user = User::create([
+            'name' => 'superadmin',
             'email' => 'superadmin@test.dev',
-            'password' => Hash::make('123qweasd'),
-            'role' => 'superadmin',
+            'password' => bcrypt('123qweasd'),
         ]);
+        $user->assignRole('superadmin');
 
-        DB::table('users')->insert([
+        $user = User::create([
             'name' => 'Admin',
             'email' => 'admin@test.dev',
-            'password' => Hash::make('123qweasd'),
-            'role' => 'admin',
+            'password' => bcrypt('123qweasd'),
         ]);
+        $user->assignRole('admin');
 
-        DB::table('users')->insert([
+        $user = User::create([
             'name' => 'Operator',
             'email' => 'operator@test.dev',
-            'password' => Hash::make('123qweasd'),
-            'role' => 'operator',
+            'password' => bcrypt('123qweasd'),
         ]);
+        $user->assignRole('operator');
 
-        DB::table('users')->insert([
+        $user = User::create([
             'name' => 'Owner',
             'email' => 'owner@test.dev',
-            'password' => Hash::make('123qweasd'),
-            'role' => 'owner',
+            'password' => bcrypt('123qweasd'),
         ]);
+        $user->assignRole('owner');
+
+        // Factory 30 users and assign them role as customer
+        User::factory()->count(30)->create()->each(function ($user) {
+            $user->assignRole('customer');
+            $user->customer()->create();
+        });
 
 
     }

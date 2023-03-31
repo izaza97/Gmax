@@ -27,36 +27,6 @@ class RoleSeeder extends Seeder
                 'user-edit',
                 'user-delete',
 
-                'role-list',
-                'role-create',
-                'role-edit',
-                'role-delete',
-
-                'tour-category-list',
-                'tour-category-create',
-                'tour-category-edit',
-                'tour-category-delete',
-
-                'tour-list',
-                'tour-create',
-                'tour-edit',
-                'tour-delete',
-
-                'news-category-list',
-                'news-category-create',
-                'news-category-edit',
-                'news-category-delete',
-
-                'news-list',
-                'news-create',
-                'news-edit',
-                'news-delete',
-
-                'lodge-list',
-                'lodge-create',
-                'lodge-edit',
-                'lodge-delete',
-
                 'employee-list',
                 'employee-create',
                 'employee-edit',
@@ -65,7 +35,7 @@ class RoleSeeder extends Seeder
         )->get();
         $admin->syncPermissions($permissions);
 
-        $treasurer = Role::create(['name' => 'treasurer']);
+        $operator = Role::create(['name' => 'operator']);
         $permissions = Permission::whereIn('name',
             [
             'reservation-list',
@@ -77,9 +47,19 @@ class RoleSeeder extends Seeder
             'tour-package-create',
             'tour-package-edit',
             'tour-package-delete',
+
+            'list-package-list',
+            'list-package-create',
+            'list-package-edit',
+            'list-package-delete',
+
+            'reservation-list',
+            'reservation-create',
+            'reservation-edit',
+            'reservation-delete',
             ]
         )->get();
-        $treasurer->syncPermissions($permissions);
+        $operator->syncPermissions($permissions);
 
         $owner = Role::create(['name' => 'owner']);
         $permissions = Permission::whereIn('name',

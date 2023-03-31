@@ -54,7 +54,7 @@
             <span class="nav-link-text ms-1">User Profile</span>
         </a>
         </li>
-        {{-- @can('user-management') --}}
+        @can('user-list')
         <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -63,8 +63,8 @@
             <span class="nav-link-text ms-1">User Management</span>
         </a>
         </li>
-        {{-- @endcan
-        @can('employee') --}}
+        @endcan
+        @can('employee-list')
         <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('employees') ? 'active' : '') }}" href="{{ url('employees') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -73,7 +73,7 @@
             <span class="nav-link-text ms-1">Employees</span>
         </a>
         </li>
-        {{-- @endcan --}}
+        @endcan
       <li class="nav-item mt-2">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Example pages</h6>
       </li>

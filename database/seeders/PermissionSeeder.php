@@ -18,11 +18,6 @@ class PermissionSeeder extends Seeder
             'user-edit',
             'user-delete',
 
-            'role-list',
-            'role-create',
-            'role-edit',
-            'role-delete',
-
             'tour-category-list',
             'tour-category-create',
             'tour-category-edit',
@@ -32,21 +27,6 @@ class PermissionSeeder extends Seeder
             'tour-create',
             'tour-edit',
             'tour-delete',
-
-            'news-category-list',
-            'news-category-create',
-            'news-category-edit',
-            'news-category-delete',
-
-            'news-list',
-            'news-create',
-            'news-edit',
-            'news-delete',
-
-            'lodge-list',
-            'lodge-create',
-            'lodge-edit',
-            'lodge-delete',
 
             'tour-package-list',
             'tour-package-create',

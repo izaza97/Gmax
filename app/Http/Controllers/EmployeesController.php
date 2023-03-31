@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -11,7 +12,15 @@ class EmployeesController extends Controller
 {
     public function index()
     {
-        $users = User::latest()->where('role', '!=', 'customer')->paginate(10);
+        $isSuperadmin = auth()->user()->hasRole('superadmin');
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'customer');
+            })
+            ->when(! $isSuperadmin, function ($query) {
+                $query->whereHas('roles', function ($query) {
+                    $query->where('name', '!=', 'superadmin');
+                });
+            })->paginate(10);
         return view('employees/employees')->with('users', $users);
     }
 
@@ -59,9 +68,14 @@ class EmployeesController extends Controller
 
     public function edit($id)
     {
-        $users = User::find($id);
-        $roles = ['superadmin', 'admin', 'operator', 'owner'];
-        return view('employees/employees-edit', compact('users'))->with('roles', $roles);
+        $isSuperadmin = auth()->user()->hasRole('superadmin');
+        $roles = $isSuperadmin
+            ? Role::whereNot('name', 'customer')->get()
+            : Role::whereNotIn('name', ['superadmin', 'customer'])->get();
+        $users = User::where('id', $id)->whereHas('roles', function ($query) {
+            $query->whereNot('name', 'customer');
+        })->firstOrFail();
+        return view('employees/employees-edit', compact('users', 'roles'));
     }
 
     public function update(Request $request, $id)

@@ -7,7 +7,7 @@
             <h6 class="mb-0">{{ __('Profile Information') }}</h6>
         </div>
         <div class="card-body pt-4 p-3">
-            <form action="{{ route('user.update', $users->id) }}" method="POST" role="form text-left">
+            <form action="{{ route('user.update', $user->id) }}" method="POST" role="form text-left">
                 @csrf
                 @if($errors->any())
                     <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label for="name" class="form-control-label">{{ __('Full Name') }}</label>
                             <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                <input class="form-control" value="{{ $users->name }}" type="text" placeholder="Name" id="name" name="name">
+                                <input class="form-control" value="{{ $user->name }}" type="text" placeholder="Name" id="name" name="name">
                                     @error('name')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <label for="email" class="form-control-label">{{ __('Email') }}</label>
                             <div class="@error('email')border border-danger rounded-3 @enderror">
-                                <input class="form-control" value="{{ $users->email }}" type="email" placeholder="@example.com" id="email" name="email">
+                                <input class="form-control" value="{{ $user->email }}" type="email" placeholder="@example.com" id="email" name="email">
                                     @error('email')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="phone" class="form-control-label">{{ __('Phone') }}</label>
                             <div class="@error('phone')border border-danger rounded-3 @enderror">
-                                <input type="phone" value="{{ $users->phone }}" class="form-control" id="phone" name="phone">
+                                <input type="phone" value="{{ $user->phone }}" class="form-control" id="phone" name="phone">
                                     @error('phone')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <label for="address" class="form-control-label">{{ __('Address') }}</label>
                             <div class="@error('address')border border-danger rounded-3 @enderror">
-                                <input type="address" value="{{ $users->address }}" class="form-control" id="address" name="address">
+                                <input type="address" value="{{ $user->address }}" class="form-control" id="address" name="address">
                                     @error('address')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -79,13 +79,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                         <label for="role" class="form-control-label">{{ __('Role') }}</label>
-                        <select class="form-control" id="role" name="role">
+                        <select name="role" id="role" class="form-control" required>
+                            <option value="" selected disabled>{{ __('Select Role') }}</option>
                             @foreach ($roles as $role)
-                            <option value="{{ $role }}" {{ $role == $users->role ? 'selected' : '' }}>{{ str()->title($role) }}</option>
+                                <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
                             @endforeach
                         </select>
                         @error('role')
-                            <div class="alert alert-danger">{{ $message }}</div>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                         </div>
                     </div>

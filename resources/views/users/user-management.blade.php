@@ -64,7 +64,7 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $user->email }}</p>
                                     </td>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $user->role }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ str($user->getRoleNames()[0])->title() }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         @if ($user->is_active == '1')
