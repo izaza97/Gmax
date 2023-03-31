@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\ResetController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,9 +43,21 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('rtl');
 	})->name('rtl');
 
-	Route::get('user-management', function () {
-		return view('laravel-examples/user-management');
-	})->name('user-management');
+	Route::get('/user-management', [UserController::class, 'index'])->name('user-management.index');
+    Route::get('/user-management/create', [UserController::class, 'create']);
+    Route::post('/user-management/create', [UserController::class, 'store'])->name('user.store');
+    Route::get('/user-management/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::post('/user-management/{id}/edit', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user-management/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    route::put('/user-management/{id}/status', [UserController::class, 'status'])->name('user.status');
+
+    Route::get('/employees', [EmployeesController::class, 'index'])->name('employees.index');
+    Route::get('/employees/create', [EmployeesController::class, 'create']);
+    Route::post('/employees/create', [EmployeesController::class, 'store'])->name('employees.store');
+    Route::get('/employees/{id}/edit', [EmployeesController::class, 'edit'])->name('employees.edit');
+    Route::post('/employees/{id}/edit', [EmployeesController::class, 'update'])->name('employees.update');
+    Route::delete('/employees/{id}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
+    Route::put('/employees/{id}/status', [EmployeesController::class, 'status'])->name('employees.status');
 
 	Route::get('tables', function () {
 		return view('tables');
