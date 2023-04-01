@@ -38,10 +38,6 @@ class RoleSeeder extends Seeder
         $operator = Role::create(['name' => 'operator']);
         $permissions = Permission::whereIn('name',
             [
-            'reservation-list',
-            'reservation-create',
-            'reservation-edit',
-            'reservation-delete',
 
             'tour-package-list',
             'tour-package-create',

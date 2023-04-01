@@ -43,6 +43,11 @@ class PermissionSeeder extends Seeder
             'employee-edit',
             'employee-delete',
 
+            'list-package-list',
+            'list-package-create',
+            'list-package-edit',
+            'list-package-delete',
+
             'report',
         ];
 

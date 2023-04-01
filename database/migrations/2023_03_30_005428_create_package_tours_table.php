@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('desc')->nullable();
             $table->string('facility');
             $table->string('route')->nullable();
-            $table->unsignedDecimal('dicount')->nullable()->max(100);
+            $table->unsignedDecimal('discount')->nullable()->max(100);
             $table->timestamps();
         });
     }

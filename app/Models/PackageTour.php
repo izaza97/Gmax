@@ -13,8 +13,22 @@ class PackageTour extends Model
         'id',
     ];
 
+    protected $appends = [
+        'image_path',
+    ];
+
+    public function getImagePathAttribute()
+    {
+        return url($this->images->first()?->path)??null;
+    }
+
     public function packagelist()
     {
         return $this->belongsTo(PackageList::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

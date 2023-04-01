@@ -10,6 +10,7 @@ use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\PackageTourController;
 use App\Http\Controllers\ChangePasswordController;
 
 /*
@@ -60,6 +61,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/employees/{id}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
     Route::put('/employees/{id}/status', [EmployeesController::class, 'status'])->name('employees.status');
     Route::post('/employees/{id}/image', [EmployeesController::class, 'storeImage'])->name('employees.image');
+
+    Route::get('/package-tour', [PackageTourController::class, 'index'])->name('package-tour.index');
+    Route::get('/package-tour/create', [PackageTourController::class, 'create'])->name('package-tour.create');
+    Route::post('/package-tour/create', [PackageTourController::class, 'store'])->name('package-tour.store');
+    Route::get('/package-tour/{id}/edit', [PackageTourController::class, 'edit'])->name('package-tour.edit');
+    Route::post('/package-tour/{id}/edit', [PackageTourController::class, 'update'])->name('package-tour.update');
+    Route::delete('/package-tour/{id}', [PackageTourController::class, 'destroy'])->name('package-tour.destroy');
+    Route::post('/package-tour/{id}/image', [PackageTourController::class, 'storeImage'])->name('package-tour.image');
 
 	Route::get('tables', function () {
 		return view('tables');
