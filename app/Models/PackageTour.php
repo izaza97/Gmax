@@ -13,11 +13,6 @@ class PackageTour extends Model
         'id',
     ];
 
-    public function photo()
-    {
-        return $this->hasMany(Photo::class);
-    }
-
     public function packagelist()
     {
         return $this->belongsTo(PackageList::class);

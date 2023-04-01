@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('facility');
             $table->string('route')->nullable();
             $table->unsignedDecimal('dicount')->nullable()->max(100);
-            $table->foreignId('photo_id')->constrained('photos')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

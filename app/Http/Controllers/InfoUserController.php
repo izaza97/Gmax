@@ -13,7 +13,7 @@ class InfoUserController extends Controller
 
     public function create()
     {
-        return view('users/user-profile');
+        return view('admin/users/user-profile');
     }
 
     public function store(Request $request)

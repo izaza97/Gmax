@@ -30,7 +30,7 @@ class User extends Authenticatable
 
     ];
 
-    protected $guarded = [
+    protected $append = [
         'image_path'
     ];
 
@@ -53,9 +53,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getImagePathAttribute()
+    {
+        return $this->image ? url($this->image->path) : asset('assets/img/blank-profile-picture.svg');
+    }
+
+        /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function customer(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Customer::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function image(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
     }
 
 }

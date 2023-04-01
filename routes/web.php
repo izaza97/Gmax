@@ -44,20 +44,22 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('rtl');
 
 	Route::get('/user-management', [UserController::class, 'index'])->name('user-management.index');
-    Route::get('/user-management/create', [UserController::class, 'create']);
+    Route::get('/user-management/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/user-management/create', [UserController::class, 'store'])->name('user.store');
     Route::get('/user-management/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::post('/user-management/{id}/edit', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user-management/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     route::put('/user-management/{id}/status', [UserController::class, 'status'])->name('user.status');
+    route::post('/user-management/{id}/image', [UserController::class, 'storeImage'])->name('user.image');
 
     Route::get('/employees', [EmployeesController::class, 'index'])->name('employees.index');
-    Route::get('/employees/create', [EmployeesController::class, 'create']);
+    Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.create');
     Route::post('/employees/create', [EmployeesController::class, 'store'])->name('employees.store');
     Route::get('/employees/{id}/edit', [EmployeesController::class, 'edit'])->name('employees.edit');
     Route::post('/employees/{id}/edit', [EmployeesController::class, 'update'])->name('employees.update');
     Route::delete('/employees/{id}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
     Route::put('/employees/{id}/status', [EmployeesController::class, 'status'])->name('employees.status');
+    Route::post('/employees/{id}/image', [EmployeesController::class, 'storeImage'])->name('employees.image');
 
 	Route::get('tables', function () {
 		return view('tables');

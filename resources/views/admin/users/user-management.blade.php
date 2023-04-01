@@ -53,8 +53,10 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $user->id }}</p>
                                     </td>
                                     <td>
-                                        <div>
-                                            <img src="../assets/img/blank-profile-picture.svg" class="avatar avatar-sm rounded-circle me-2">
+                                        <div class="d-flex px-2 py-1">
+                                            <div>
+                                                <img src="{{ $user->image_path }}" class="avatar avatar-sm me-3">
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="text-center">

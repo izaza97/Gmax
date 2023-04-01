@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -20,90 +20,139 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        $isSuperadmin = auth()->user()->hasRole('superadmin');
         $search = $request->query('search');
-        $users = User::query()
-        ->when($search, fn ($query, $search) =>
-            $query->where('name', 'like', "%{$search}%")
+        $users = User::when(! $isSuperadmin, fn ($query) =>
+                $query->whereHas('roles', fn ($query) =>
+                    $query->where('name', '!=', 'superadmin')
+                )
+            )
+            ->when($search, function ($query) use ($search, $isSuperadmin) {
+                $query->whereHas('roles', fn ($query) => ! $isSuperadmin
+                    ? $query->where('name', '!=', 'superadmin')
+                    : $query
+                )
+                ->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
-        )
-        ->paginate(10);
+                ->orWhere('phone', 'like', "%{$search}%")
+                ->orWhereHas('roles', fn ($query) => $query->where('name', 'like', "%{$search}%"));
+            })
+            ->paginate(10);
 
-        return view('users/user-management', compact('users', 'search'));
+        return view('admin/users/user-management', compact(['users', 'search']));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $roles = ['superadmin', 'admin', 'operator', 'owner'];
-        return view('users/user-create')->with('roles', $roles);
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::all()
+                : Role::where('name', '!=', 'superadmin')->get();
+            return view('admin/users/user-create', compact('roles'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users',
-            'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()],
-            'password_confirmation' => 'required|same:password',
-            'role' => 'required|in:superadmin,admin,operator,owner',
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|max:255|confirmed',
+            'role' => 'required|exists:roles,name',
         ]);
 
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role = $request->role;
-        $user->save();
-
-        return redirect()->route('user-management.index')->with('success', 'User created successfully.');
+            $user = User::create($request->only('name', 'email', 'password'));
+            $user->assignRole($request->role);
+            return redirect()->route('user-management.index')->with('success', 'User created successfully');
     }
 
-    public function show($id)
+    public function storeImage(Request $request, string $id)
     {
-        $user = User::find($id);
-        return view('user.show', compact('user'));
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+            $user = User::findOrFail($id);
+            $dir = 'avatars';
+            $image = Image::store($request->file('image'), $dir, $user, true);
+            return redirect()->route('user.edit', $user->id)->with('success', 'Image uploaded successfully');
     }
 
-    public function status($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $user = User::find($id);
-        $user->update([
-            'is_active' => ! $user->is_active]);
-        return redirect()->route('user-management.index')->with('success', 'User status updated successfully.');
+        try {
+            $user = User::findOrFail($id);
+            return view('admin.users.show', compact('user'));
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
     }
 
-    public function edit($id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $user = User::findOrFail($id);
-        $isSuperadmin = auth()->user()->hasRole('superadmin');
-        $roles = $isSuperadmin
-            ? Role::all()
-            : Role::where('name', '!=', 'superadmin')->get();
-        return view('users/user-edit', compact('user', 'roles'));
+            $user = User::findOrFail($id);
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::all()
+                : Role::where('name', '!=', 'superadmin')->get();
+            return view('admin/users/user-edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required|min:3',
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'address' => 'nullable',
-            'phone' => ' nullable|numeric',
+            'role' => 'required|exists:roles,name',
         ]);
 
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return redirect()->route('user-management.index')->with('success', 'User updated successfully.');
+            $user = User::findOrFail($id);
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+            $user->syncRoles($request->role);
+            return redirect()->route('user-management.index')->with('success', 'User updated successfully');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $user = User::find($id);
-        $user->delete();
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('user-management.index')->with('success', 'User deleted successfully');
+    }
 
-        return redirect()->route('user-management.index')->with('success', 'User deleted successfully.');
+    public function destroyImage(string $id)
+    {
+            $user = User::findOrFail($id);
+            $image = $user->image;
+            Image::purge($image);
+            return redirect()->route('admin/users/user-edit', $user->id)->with('success', 'Image deleted successfully');
+    }
+
+    public function Status(string $id)
+    {
+            $user = User::findOrFail($id);
+            $user->update([
+                'is_active' => ! $user->is_active
+            ]);
+            return redirect()->route('user-management.index')->with('success', 'User status updated successfully');
     }
 }
