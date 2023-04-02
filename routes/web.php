@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/user-management/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     route::put('/user-management/{id}/status', [UserController::class, 'status'])->name('user.status');
     route::post('/user-management/{id}/image', [UserController::class, 'storeImage'])->name('user.image');
+    route::delete('/user-management/{id}/image', [UserController::class, 'destroyImage'])->name('user.destroyImage');
 
     Route::get('/employees', [EmployeesController::class, 'index'])->name('employees.index');
     Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.create');
@@ -61,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/employees/{id}', [EmployeesController::class, 'destroy'])->name('employees.destroy');
     Route::put('/employees/{id}/status', [EmployeesController::class, 'status'])->name('employees.status');
     Route::post('/employees/{id}/image', [EmployeesController::class, 'storeImage'])->name('employees.image');
+    Route::delete('/employees/{id}/image', [EmployeesController::class, 'destroyImage'])->name('employees.destroyImage');
 
     Route::get('/package-tour', [PackageTourController::class, 'index'])->name('package-tour.index');
     Route::get('/package-tour/create', [PackageTourController::class, 'create'])->name('package-tour.create');
@@ -69,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/package-tour/{id}/edit', [PackageTourController::class, 'update'])->name('package-tour.update');
     Route::delete('/package-tour/{id}', [PackageTourController::class, 'destroy'])->name('package-tour.destroy');
     Route::post('/package-tour/{id}/image', [PackageTourController::class, 'storeImage'])->name('package-tour.image');
+    Route::delete('/package-tour/{id}/image', [PackageTourController::class, 'destroyImage'])->name('package-tour.destroyImage');
 
 	Route::get('tables', function () {
 		return view('tables');

@@ -25,12 +25,20 @@
                             <button type="button" class="btn btn-sm btn-link" onclick="document.getElementById('image').click()">
                                 {{ __('Change Avatar') }}
                             </button>
-
                             {{-- Disable until image inputed --}}
                             <button type="submit" class="d-none" id="upload">
                                 {{ __('Upload') }}
                             </button>
                         </form>
+                        <span>
+                            <form action="{{ route('employees.destroyImage', $users->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete profil">
+                                    <i class="fas fa-trash text-secondary"></i>
+                                </button>
+                            </form>
+                        </span>
                     </div>
                 </div>
 

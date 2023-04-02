@@ -65,14 +65,25 @@ class PackageTourController extends Controller
         ]);
 
             $PackageTour = PackageTour::findOrfail($id);
-            $dir = 'avatars';
+            $dir = 'package-tour'. $PackageTour->id;
             $image = Image::store($request->file('image'), $dir, $PackageTour, true);
-            return redirect()->route('user.edit', $PackageTour->id)->with('success', 'Image uploaded successfully');
+            return redirect()->route('package-tour.edit', $PackageTour->id)->with('success', 'Image uploaded successfully');
+    }
+
+    public function destroyImage($id)
+    {
+        $image = Image::findOrfail($id);
+        $image->delete();
+        return redirect()->route('package-tour.edit', $image->imageable->id)->with('success', 'Image deleted successfully');
     }
 
     public function edit($id)
     {
-        return view('package-tour-edit');
+        $packageTour = PackageTour::findOrfail($id);
+        foreach ($packageTour->images as $image) {
+            $image->url = $image->get();
+        }
+        return view('operator.package-tour.edit', compact('packageTour'));
     }
 
     public function update(Request $request, $id)

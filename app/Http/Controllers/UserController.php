@@ -83,6 +83,13 @@ class UserController extends Controller
             return redirect()->route('user.edit', $user->id)->with('success', 'Image uploaded successfully');
     }
 
+    public function destroyImage($id)
+    {
+            $user = User::findOrFail($id);
+            $user->image()->delete();
+            return redirect()->route('user.edit', $user->id)->with('success', 'Image deleted successfully');
+    }
+
     /**
      * Display the specified resource.
      */
@@ -137,14 +144,6 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
             return redirect()->route('user-management.index')->with('success', 'User deleted successfully');
-    }
-
-    public function destroyImage(string $id)
-    {
-            $user = User::findOrFail($id);
-            $image = $user->image;
-            Image::purge($image);
-            return redirect()->route('admin/users/user-edit', $user->id)->with('success', 'Image deleted successfully');
     }
 
     public function Status(string $id)

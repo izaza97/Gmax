@@ -124,7 +124,7 @@ class EmployeesController extends Controller
         return redirect()->route('employees.index')->with('success', 'User deleted successfully.');
     }
 
-    public function Image(Request $request, string $id)
+    public function storeImage(Request $request, string $id)
     {
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -134,5 +134,12 @@ class EmployeesController extends Controller
             $dir = 'avatars';
             $image = Image::store($request->file('image'), $dir, $user, true);
             return redirect()->route('employees.edit', $user->id)->with('success', 'Image uploaded successfully');
+    }
+
+    public function destroyImage($id)
+    {
+        $user = User::findOrFail($id);
+        $user->image()->delete();
+        return redirect()->route('employees.edit', $user->id)->with('success', 'Image deleted successfully');
     }
 }

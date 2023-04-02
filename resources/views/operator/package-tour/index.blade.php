@@ -74,17 +74,14 @@
                                         <span class="text-secondary text-xs font-weight-bold">{{ $packageTour->discount }}</span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ $packageTour->price }}</span>
-                                    </td>
-                                    <td class="text-center">
-                                    {{-- <div class="d-flex justify-content-center">
+                                    <div class="d-flex justify-content-center">
                                         <div class="me-3">
-                                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Edit user">
+                                            <a href="{{ route('package-tour.edit', $packageTour->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Edit user">
                                                 <i class="fas fa-user-edit text-secondary"></i>
                                             </a>
                                         </div>
                                         <div class="me-3">
-                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST">
+                                            <form action="{{ route('package-tour.destroy', $packageTour->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete user">
@@ -92,7 +89,7 @@
                                                 </button>
                                             </form>
                                         </div>
-                                        <div>
+                                        {{-- <div>
                                             <form action="{{ route('user.status', $user->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')

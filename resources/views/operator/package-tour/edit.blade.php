@@ -6,19 +6,19 @@
     <div class="container-fluid py-4">
         <div class="card">
             <div class="card-header pb-0 px-3">
-                <h6 class="mb-0">{{ __('Edit User') }}</h6>
+                <h6 class="mb-0">{{ __('Edit Package Tour') }}</h6>
             </div>
             <div class="card-body pt-4 p-3">
                 {{-- Show image in center and two buttons below for upload and delete image --}}
                 <div class="d-flex justify-content-center">
                     <div class="avatar avatar-xl">
-                        <img src="{{ $user->image_path }}" alt="..." class="avatar avatar-xl me-3">
+                        <img src="{{ $packageTour->image_path }}" alt="..." class="avatar avatar-xl me-3">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-center mt-3">
                     <div class="btn-group">
-                        <form action="{{ route('user.image', $user->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('package-tour.image', $packageTour->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="file" name="image" id="image" class="d-none" accept="image/*" onchange="document.getElementById('upload').click()">
                             {{-- Upload button --}}
@@ -31,7 +31,7 @@
                             </button>
                         </form>
                         <span>
-                            <form action="{{ route('user.destroyImage', $user->id) }}" method="POST">
+                            <form action="{{ route('package-tour.destroyImage', $packageTour->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete profil">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('user.update', $user->id) }}" method="POST">
+                <form action="{{ route('user.update', $packageTour->id) }}" method="POST">
                     @csrf
                     @if($errors->any())
                         <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
@@ -65,29 +65,23 @@
                     {{-- Name --}}
                     <div class="form-group">
                         <label for="name" class="form-control-label">{{ __('Name') }}</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ $user->name }}" required>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ $packageTour->name }}" required>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- Email --}}
+                    {{-- Desc --}}
                     <div class="form-group">
-                        <label for="email" class="form-control-label">{{ __('Email') }}</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="{{ __('Email') }}" value="{{ $user->email }}" required>
-                        @error('email')
+                        <label for="desc" class="form-control-label">{{ __('Desc') }}</label>
+                        <input type="desc" name="desc" id="desc" class="form-control" placeholder="{{ __('desc') }}" value="{{ $packageTour->desc }}" required>
+                        @error('desc')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- Roles --}}
                     <div class="form-group">
-                        <label for="roles" class="form-control-label">{{ __('Roles') }}</label>
-                        <select name="role" id="role" class="form-control" required>
-                            <option value="" selected disabled>{{ __('Select Role') }}</option>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
-                            @endforeach
-                        </select>
-                        @error('role')
+                        <label for="facility" class="form-control-label">{{ __('Facility') }}</label>
+                        <input type="facility" name="facility" id="facility" class="form-control" placeholder="{{ __('facility') }}" value="{{ $packageTour->facility }}" required>
+                        @error('facility')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
