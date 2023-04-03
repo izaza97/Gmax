@@ -19,7 +19,7 @@ class PackageTour extends Model
 
     public function getImagePathAttribute()
     {
-        return url($this->images->first()?->path)??null;
+        return $this->images->first()->path;
     }
 
     public function packagelist()

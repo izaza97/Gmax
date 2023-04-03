@@ -23,9 +23,6 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         ID
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                        Photo
-                                    </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Name
                                     </th>
@@ -52,20 +49,13 @@
                                     <td class="ps-4">
                                         <p class="text-xs font-weight-bold mb-0">{{ $packageTour->id }}</p>
                                     </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div>
-                                                <img src="{{ $packageTour->image_path }}" class="avatar avatar-sm me-3">
-                                            </div>
-                                        </div>
-                                    </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $packageTour->name }}</p>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ substr($packageTour->desc, 0, 50) }} ...</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ substr($packageTour->desc, 0, 20) }} ...</p>
                                     </td>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $packageTour->facility }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ substr($packageTour->facility, 0, 20) }} ...</p>
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $packageTour->itinerary }}</p>
@@ -76,15 +66,25 @@
                                     <td class="text-center">
                                     <div class="d-flex justify-content-center">
                                         <div class="me-3">
-                                            <a href="{{ route('package-tour.edit', $packageTour->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Edit user">
-                                                <i class="fas fa-user-edit text-secondary"></i>
+                                            <a href="{{ route('package-tour.showDetail', $packageTour->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="show package tour">
+                                                <i class="fas fa-image text-secondary"></i>
                                             </a>
                                         </div>
                                         <div class="me-3">
+                                            <a href="{{ route('package-tour.showImage', $packageTour->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Edit package tour">
+                                                <i class="fas fa-image text-secondary"></i>
+                                            </a>
+                                        </div>
+                                        <div class="me-3">
+                                            <a href="{{ route('package-tour.edit', $packageTour->id) }}" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Edit package tour">
+                                                <i class="fas fa-user-edit text-secondary"></i>
+                                            </a>
+                                        </div>
+                                        <div>
                                             <form action="{{ route('package-tour.destroy', $packageTour->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete user">
+                                                <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete package tour">
                                                     <i class="fas fa-trash text-secondary"></i>
                                                 </button>
                                             </form>
@@ -101,8 +101,8 @@
                                                 <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Change status">
                                                     <i class="fas fa-toggle-off text-secondary"></i>
                                                 </button>
-                                                @endif --}}
-                                            </form>
+                                                @endif
+                                            </form> --}}
                                         </div>
                                     </div>
                                     </td>

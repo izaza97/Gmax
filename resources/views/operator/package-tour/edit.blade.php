@@ -9,39 +9,6 @@
                 <h6 class="mb-0">{{ __('Edit Package Tour') }}</h6>
             </div>
             <div class="card-body pt-4 p-3">
-                {{-- Show image in center and two buttons below for upload and delete image --}}
-                <div class="d-flex justify-content-center">
-                    <div class="avatar avatar-xl">
-                        <img src="{{ $packageTour->image_path }}" alt="..." class="avatar avatar-xl me-3">
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-center mt-3">
-                    <div class="btn-group">
-                        <form action="{{ route('package-tour.image', $packageTour->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" name="image" id="image" class="d-none" accept="image/*" onchange="document.getElementById('upload').click()">
-                            {{-- Upload button --}}
-                            <button type="button" class="btn btn-sm btn-link" onclick="document.getElementById('image').click()">
-                                {{ __('Change Avatar') }}
-                            </button>
-                            {{-- Disable until image inputed --}}
-                            <button type="submit" class="d-none" id="upload">
-                                {{ __('Upload') }}
-                            </button>
-                        </form>
-                        <span>
-                            <form action="{{ route('package-tour.destroyImage', $packageTour->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-link text-danger p-0 m-0" data-bs-toggle="tooltip" data-bs-original-title="Delete profil">
-                                    <i class="fas fa-trash text-secondary"></i>
-                                </button>
-                            </form>
-                        </span>
-                    </div>
-                </div>
-
                 <form action="{{ route('user.update', $packageTour->id) }}" method="POST">
                     @csrf
                     @if($errors->any())
@@ -67,6 +34,38 @@
                         <label for="name" class="form-control-label">{{ __('Name') }}</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ $packageTour->name }}" required>
                         @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    {{-- Description --}}
+                    <div class="form-group">
+                        <label for="desc" class="form-control-label">{{ __('Description') }}</label>
+                        <textarea type="textarea" id="desc" class="ckeditor form-control" placeholder="{{ __('desciption') }}" value="{{ old('desc') }}" required name="desc"></textarea>
+                        @error('desc')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    {{-- facility --}}
+                    <div class="form-group">
+                        <label for="facility" class="form-control-label">{{ __('Facility') }}</label>
+                        <textarea type="facility" name="facility" id="facility" class="ckeditor form-control" placeholder="{{ __('Facility') }}" value="{{ old('facility') }}"></textarea>
+                        @error('facility')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    {{-- route --}}
+                    <div class="form-group">
+                        <label for="route" class="form-control-label">{{ __('Route') }}</label>
+                        <input type="text" name="route" id="route" class="form-control" placeholder="{{ __('Route') }}" value="{{ old('route') }}">
+                        @error('route')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    {{-- discount --}}
+                    <div class="form-group">
+                        <label for="discount" class="form-control-label">{{ __('Discount') }}</label>
+                        <input type="text" name="discount" id="discount" class="form-control" placeholder="{{ __('Discount') }}" value="{{ old('discount') }}">
+                        @error('discount')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

@@ -70,8 +70,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/package-tour/{id}/edit', [PackageTourController::class, 'edit'])->name('package-tour.edit');
     Route::post('/package-tour/{id}/edit', [PackageTourController::class, 'update'])->name('package-tour.update');
     Route::delete('/package-tour/{id}', [PackageTourController::class, 'destroy'])->name('package-tour.destroy');
+    Route::get('/package-tour/{id}/image', [PackageTourController::class, 'showImage'])->name('package-tour.showImage');
     Route::post('/package-tour/{id}/image', [PackageTourController::class, 'storeImage'])->name('package-tour.image');
     Route::delete('/package-tour/{id}/image', [PackageTourController::class, 'destroyImage'])->name('package-tour.destroyImage');
+    Route::get('/package-tour/{id}/detail', [PackageTourController::class, 'showDetail'])->name('package-tour.showDetail');
 
 	Route::get('tables', function () {
 		return view('tables');

@@ -86,6 +86,12 @@
                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                   @enderror
                 </div>
+                <div class="mb-3">
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="{{ old('password_confirmation') }}" required>
+                    @error('password_confirmation')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="form-check form-check-info text-left">
                   <input class="form-check-input" type="checkbox" name="agreement" id="flexCheckDefault" checked>
                   <label class="form-check-label" for="flexCheckDefault">

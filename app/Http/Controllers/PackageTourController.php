@@ -21,8 +21,6 @@ class PackageTourController extends Controller
         $search = $request->query('search');
         $PackageTour = PackageTour::when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('phone', 'like', "%{$search}%")
                 ->orWhereHas('roles', fn ($query) => $query->where('name', 'like', "%{$search}%"));
         })
             ->paginate(10);
@@ -58,6 +56,12 @@ class PackageTourController extends Controller
         return redirect()->route('package-tour.index')->with('success', 'Package Tour created successfully');
     }
 
+    public function showImage($id, Request $request)
+    {
+        $packageTour = PackageTour::find($id);
+        return view('operator.package-tour.image', compact('packageTour'));
+    }
+
     public function storeImage(Request $request, string $id)
     {
         $this->validate($request, [
@@ -80,9 +84,6 @@ class PackageTourController extends Controller
     public function edit($id)
     {
         $packageTour = PackageTour::findOrfail($id);
-        foreach ($packageTour->images as $image) {
-            $image->url = $image->get();
-        }
         return view('operator.package-tour.edit', compact('packageTour'));
     }
 
@@ -107,9 +108,12 @@ class PackageTourController extends Controller
         return redirect()->route('package-tour.index')->with('success', 'Package Tour updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
-
+            $packageTour = PackageTour::findOrFail($id);
+            $packageTour->images()->delete();
+            $packageTour->delete();
+            return redirect()->route('package-tour.index')->with('success', 'package tour deleted successfully');
     }
 
     public function search(Request $request)
@@ -117,5 +121,10 @@ class PackageTourController extends Controller
         return view('package-tour');
     }
 
-
+    public function showDetail($id)
+    {
+        $PackageTour = PackageTour::find($id);
+        // dd($packageTour);
+        return view('operator.package-tour.show', compact('PackageTour'));
+    }
 }

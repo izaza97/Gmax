@@ -40,7 +40,7 @@
                     {{-- Description --}}
                     <div class="form-group">
                         <label for="desc" class="form-control-label">{{ __('Description') }}</label>
-                        <input type="desc" name="desc" id="desc" class="form-control" placeholder="{{ __('desciption') }}" value="{{ old('desc') }}" required>
+                        <textarea type="textarea" id="desc" class="ckeditor form-control" placeholder="{{ __('desciption') }}" value="{{ old('desc') }}" required name="desc"></textarea>
                         @error('desc')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -48,7 +48,7 @@
                     {{-- facility --}}
                     <div class="form-group">
                         <label for="facility" class="form-control-label">{{ __('Facility') }}</label>
-                        <input type="facility" name="facility" id="facility" class="form-control" placeholder="{{ __('Facility') }}" value="{{ old('facility') }}">
+                        <textarea type="facility" name="facility" id="facility" class="ckeditor form-control" placeholder="{{ __('Facility') }}" value="{{ old('facility') }}"></textarea>
                         @error('facility')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

@@ -12,6 +12,12 @@
                         <div>
                             <h5 class="mb-0">All Users</h5>
                         </div>
+                        <form action="{{ route('user-management.index') }}" method="GET">
+                            <div class="input-group-sm">
+                                {{-- Submit when enter pressed --}}
+                                <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
+                            </div>
+                        </form>
                         <a href="/user-management/create" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; New User</a>
                     </div>
                 </div>
@@ -66,7 +72,7 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $user->email }}</p>
                                     </td>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ str($user->getRoleNames()[0])->title() }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ str($user->getRoleNames())->title() }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         @if ($user->is_active == '1')
