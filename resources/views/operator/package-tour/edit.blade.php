@@ -9,7 +9,7 @@
                 <h6 class="mb-0">{{ __('Edit Package Tour') }}</h6>
             </div>
             <div class="card-body pt-4 p-3">
-                <form action="{{ route('user.update', $packageTour->id) }}" method="POST">
+                <form action="{{ route('package-tour.update', $packageTour->id) }}" method="POST">
                     @csrf
                     @if($errors->any())
                         <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
@@ -40,7 +40,7 @@
                     {{-- Description --}}
                     <div class="form-group">
                         <label for="desc" class="form-control-label">{{ __('Description') }}</label>
-                        <textarea type="textarea" id="desc" class="ckeditor form-control" placeholder="{{ __('desciption') }}" value="{{ old('desc') }}" required name="desc"></textarea>
+                        <textarea type="textarea" id="desc" class="ckeditor form-control" placeholder="{{ __('desciption') }}" value="{{ $packageTour->desc }}" required name="desc">{{ $packageTour->desc }}</textarea>
                         @error('desc')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -48,7 +48,7 @@
                     {{-- facility --}}
                     <div class="form-group">
                         <label for="facility" class="form-control-label">{{ __('Facility') }}</label>
-                        <textarea type="facility" name="facility" id="facility" class="ckeditor form-control" placeholder="{{ __('Facility') }}" value="{{ old('facility') }}"></textarea>
+                        <textarea type="facility" name="facility" id="facility" class="ckeditor form-control" placeholder="{{ __('Facility') }}" value="{{ $packageTour->facility }}">{{ $packageTour->facility }}</textarea>
                         @error('facility')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -69,25 +69,10 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- Desc --}}
-                    <div class="form-group">
-                        <label for="desc" class="form-control-label">{{ __('Desc') }}</label>
-                        <input type="desc" name="desc" id="desc" class="form-control" placeholder="{{ __('desc') }}" value="{{ $packageTour->desc }}" required>
-                        @error('desc')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="facility" class="form-control-label">{{ __('Facility') }}</label>
-                        <input type="facility" name="facility" id="facility" class="form-control" placeholder="{{ __('facility') }}" value="{{ $packageTour->facility }}" required>
-                        @error('facility')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
                     {{-- Back and Update button --}}
                     <div class="d-flex justify-content-end">
                         <div class="me-3">
-                            <a href="{{ route('user-management.index') }}" class="btn bg-gradient-secondary btn-md mt-2 mb-2">{{ __('Back') }}</a>
+                            <a href="{{ route('package-tour.index') }}" class="btn bg-gradient-secondary btn-md mt-2 mb-2">{{ __('Back') }}</a>
                         </div>
                         <button type="submit" class="btn bg-gradient-dark btn-md mt-2 mb-2">{{ 'Save Changes' }}</button>
                     </div>

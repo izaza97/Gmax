@@ -36,6 +36,9 @@
                                         itinerary
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        discount
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Creation Date
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -58,10 +61,13 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ substr($packageTour->facility, 0, 20) }} ...</p>
                                     </td>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $packageTour->itinerary }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $packageTour->route }}</p>
                                     </td>
                                     <td class="text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ $packageTour->discount }}</span>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $packageTour->discount }}%</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ $packageTour->created_at }}</span>
                                     </td>
                                     <td class="text-center">
                                     <div class="d-flex justify-content-center">

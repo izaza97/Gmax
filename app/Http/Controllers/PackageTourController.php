@@ -48,7 +48,7 @@ class PackageTourController extends Controller
             'images' => 'required|array|min:1',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        $PackageTour = PackageTour::create($request->only('name', 'desc', 'facility', 'route', 'dicount'));
+        $PackageTour = PackageTour::create($request->only('name', 'desc', 'facility', 'route', 'discount'));
         $dir = 'package-tour'. $PackageTour->id;
         foreach ($request->file('images') as $image) {
             Image::store($image, $dir, $PackageTour, false);
@@ -94,7 +94,7 @@ class PackageTourController extends Controller
             'desc' => 'required',
             'facility' => 'required',
             'route' => 'nullable|string',
-            'dicount' => 'nullable|numeric|max:100',
+            'discount' => 'nullable|numeric|max:100',
         ]);
 
         $PackageTour = PackageTour::findOrfail($id);
@@ -103,7 +103,7 @@ class PackageTourController extends Controller
             'desc' => $request->desc,
             'facility' => $request->facility,
             'route' => $request->route,
-            'dicount' => $request->dicount,
+            'discount' => $request->discount,
         ]);
         return redirect()->route('package-tour.index')->with('success', 'Package Tour updated successfully');
     }

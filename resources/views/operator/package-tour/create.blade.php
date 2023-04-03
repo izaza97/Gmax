@@ -64,7 +64,7 @@
                     {{-- discount --}}
                     <div class="form-group">
                         <label for="discount" class="form-control-label">{{ __('Discount') }}</label>
-                        <input type="text" name="discount" id="discount" class="form-control" placeholder="{{ __('Discount') }}" value="{{ old('discount') }}">
+                        <input type="decimal" name="discount" id="discount" class="form-control" placeholder="{{ __('Discount') }}" value="{{ old('discount') }}">
                         @error('discount')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

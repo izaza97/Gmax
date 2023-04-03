@@ -12,6 +12,7 @@ use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PackageTourController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\PackageListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/package-tour/{id}/image', [PackageTourController::class, 'storeImage'])->name('package-tour.image');
     Route::delete('/package-tour/{id}/image', [PackageTourController::class, 'destroyImage'])->name('package-tour.destroyImage');
     Route::get('/package-tour/{id}/detail', [PackageTourController::class, 'showDetail'])->name('package-tour.showDetail');
+
+    Route::get('/package-list', [PackageListController::class, 'index'])->name('package-list.index');
+    Route::get('/package-list/create', [PackageListController::class, 'create'])->name('package-list.create');
+    Route::post('/package-list/create', [PackageListController::class, 'store'])->name('package-list.store');
+    Route::get('/package-list/{id}/edit', [PackageListController::class, 'edit'])->name('package-list.edit');
+    Route::post('/package-list/{id}/edit', [PackageListController::class, 'update'])->name('package-list.update');
+    Route::delete('/package-list/{id}', [PackageListController::class, 'destroy'])->name('package-list.destroy');
 
 	Route::get('tables', function () {
 		return view('tables');
